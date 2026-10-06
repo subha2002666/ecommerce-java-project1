@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | ShopSphere</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="center-page">
+<div class="auth-card">
+    <a class="brand" href="/">ShopSphere</a>
+    <h1>Create account</h1>
+    <form id="registerForm">
+        <input id="name" placeholder="Full name" required>
+        <input id="email" type="email" placeholder="Email" required>
+        <input id="password" type="password" placeholder="Password" required minlength="6">
+        <button type="submit">Register</button>
+    </form>
+    <p id="message" class="message"></p>
+    <p>Already registered? <a href="/login.html">Login</a></p>
+</div>
+<script>
+document.getElementById("registerForm").addEventListener("submit", async e => {
+    e.preventDefault();
+    const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value
+        })
+    });
+    const data = await response.json();
+    if (!response.ok) {
+        document.getElementById("message").textContent = data.message || "Registration failed";
+        return;
+    }
+    alert("Registration successful. Please login.");
+    location.href = "/login.html";
+});
+</script>
+</body>
+</html>
